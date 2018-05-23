@@ -1,0 +1,40 @@
+void BlackBox::processedImg()
+{
+	//bgr2Gray(frame);
+	Mat morph;
+	//morphologyEx(frame, frame, MORPH_BLACKHAT, kernel);
+	cvtColor(frame, frame, COLOR_BGR2GRAY);
+	blur(frame, frame, Size(2, 2)); // À±°û
+	
+	Mat kernel(11,11, CV_8U);
+	morphologyEx(frame, morph, MORPH_BLACKHAT, kernel);
+	Canny(frame, frame, 100, 200);
+	vector<vector<Point>> contours;
+	vector<Vec4i> hierarchy;
+	findContours(frame, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE, \
+		Point(0, 0));
+
+	vector<Point> poly;
+	Mat poly_img, rectangle_img;
+
+	cvtColor(frame, frame, CV_GRAY2BGR);
+	//cvtColor(frame, rectangle_img, CV_GRAY2BGR);
+	//	
+
+	for (int idx = 0; idx < contours.size(); idx++)
+	{
+		approxPolyDP(contours[idx], poly, 4, true);
+		for (int i = 0; i < poly.size(); i++)
+		{
+			if (poly.size() == 4)
+				line(frame, poly[i], poly[(i + 1) % poly.size()], Scalar(255, 0, 0), 2);
+		}
+
+	}
+
+	//line(frame, Point(0, videoSize.height / 2.2), Point(videoSize.width, videoSize.height / 2.2), \
+	//	Scalar(0, 255, 0), 3); // LIMIT line
+
+	imshow("Frame", frame);
+	waitKey(0);
+}

@@ -21,21 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="1-1.cpp">
-      <Filter>소스 파일\1차시</Filter>
-    </ClCompile>
-    <ClCompile Include="1-2.cpp">
-      <Filter>소스 파일\1차시</Filter>
-    </ClCompile>
-    <ClCompile Include="1-3.cpp">
-      <Filter>소스 파일\1차시</Filter>
-    </ClCompile>
-    <ClCompile Include="1-4.cpp">
-      <Filter>소스 파일\1차시</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일\과제</Filter>
     </ClCompile>
