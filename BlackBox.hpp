@@ -1,6 +1,7 @@
 #pragma once
 #include <opencv2\opencv.hpp>
 #include <iostream>
+#include<algorithm>
 
 using namespace std;
 using namespace cv;
@@ -18,7 +19,7 @@ private:
 
 public:
 	BlackBox(string fname,int _format);
-	BlackBox(); // 기본 생성자
+	BlackBox()	{	}// 기본 생성자
 	~BlackBox();
 	void drawRect(Mat& _frame, Size _xy,Size _size);
 	void processedVideo(int _mode);
