@@ -1,5 +1,9 @@
 ﻿  BlackBox.cpp
-e:\opencvtest\blackbox\blackbox.cpp(90): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-e:\opencvtest\blackbox\blackbox.cpp(91): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-e:\opencvtest\blackbox\blackbox.cpp(92): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+e:\opencvtest\blackbox\blackbox.hpp(39): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+e:\opencvtest\blackbox\blackbox.hpp(40): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+e:\opencvtest\blackbox\blackbox.hpp(41): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  main2.cpp
+e:\opencvtest\blackbox\blackbox.hpp(39): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+e:\opencvtest\blackbox\blackbox.hpp(40): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+e:\opencvtest\blackbox\blackbox.hpp(41): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   OpenCVTest.vcxproj -> E:\OpenCVTest\BlackBox\x64\Debug\OpenCVTest.exe
