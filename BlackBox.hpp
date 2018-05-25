@@ -14,6 +14,7 @@ class BlackBox
 {
 private:
 	Mat frame;
+	Mat proccessImg;
 	VideoCapture cap;
 	Size videoSize;
 
@@ -25,32 +26,28 @@ public:
 	void ROI2Threshold(Mat &_image, Point _xy, Size _size, int _mode);
 	void drawRect(Mat& _frame, Size _xy,Size _size);
 	void processedVideo(int _mode);
+	Mat& getMorphologyImage(Mat _image, Mat _kernel, int _mode);
 	void processedImg()
 	{
 		/*---------- Image Processing -----------*/
-		//bgr2Gray(frame);
-
-		//morphologyEx(frame, frame, MORPH_BLACKHAT, kernel);
-		Mat grayImg;
-		cvtColor(frame, grayImg, COLOR_BGR2GRAY);
 		cvtColor(frame, frame, COLOR_BGR2GRAY);
 		Mat blurImg;
-		blur(grayImg, blurImg, Size(2, 2)); // 윤곽
+		blur(frame, blurImg, Size(2, 2)); // 윤곽
+		
 		ROI2Threshold(blurImg, Point(0, videoSize.height / 2.2), Size(videoSize.width, videoSize.height / 2.2),1); // 관심영역 설정 (도로)
 		ROI2Threshold(blurImg, Point(0, 0), Size(videoSize.width, videoSize.height / 2.2), 0);  // 관심영역 설정 (하늘)
 		ROI2Threshold(blurImg, Point(0, videoSize.height / 1.3), Size(videoSize.width, videoSize.height - videoSize.height / 1.3), 0); // 관심영역 설정 (자동차)
 		
+		
+		Mat morphImg =  getMorphologyImage(blurImg, Mat(9, 9, CV_8U), MORPH_TOPHAT);
+		 // 커널값 클수록 흰 영역 많아짐.
+		//morphologyEx(blurImg, morphImg,MORPH_TOPHAT, kernel);
+
+		////Mat temp = morphImg.clone(); // 새로운 공간 생성
+		//imshow("morphImg", morphImg);
+		
 		imshow("blurImg", blurImg);
-
-		Mat morphImg;
-		Mat kernel(9, 9, CV_8U); // 커널값 클수록 흰 영역 많아짐.
-		morphologyEx(blurImg, morphImg,MORPH_TOPHAT, kernel);
-
-		//Mat temp = morphImg.clone(); // 새로운 공간 생성
 		imshow("morphImg", morphImg);
-
-
-
 
 
 		//*---------- Find Contour ----------*/

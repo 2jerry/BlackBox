@@ -54,9 +54,14 @@ void BlackBox::ROI2Threshold(Mat &_image, Point _xy, Size _size, int _mode)
 		threshold(imageROI, imageROI, 0, 0, THRESH_BINARY);
 	else
 		adaptiveThreshold(imageROI, imageROI, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 11, 9.0);
-
 }
 // 3. contour 추출을 위해 이미지를 binary로 설정
+Mat& BlackBox::getMorphologyImage(Mat _image, Mat _kernel, int _mode)
+{
+	//Mat morphImg;
+	morphologyEx(_image, proccessImg, _mode, _kernel);
+	return proccessImg;
+}
 // 4. contour 추출
 // 5. 번호판의 조건 설정
 
