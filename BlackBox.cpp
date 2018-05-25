@@ -55,14 +55,32 @@ void BlackBox::ROI2Threshold(Mat &_image, Point _xy, Size _size, int _mode)
 	else
 		adaptiveThreshold(imageROI, imageROI, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 11, 9.0);
 }
-// 3. contour 추출을 위해 이미지를 binary로 설정
-Mat& BlackBox::getMorphologyImage(Mat _image, Mat _kernel, int _mode)
-{
-	//Mat morphImg;
-	morphologyEx(_image, proccessImg, _mode, _kernel);
-	return proccessImg;
-}
+
+
 // 4. contour 추출
+
+// 백터의 0은 시작, 1은 끝
+Size* BlackBox::findRectPoint(vector<Point> _poly)
+{
+	Size point[2];
+	int s = INT_MAX;
+	int b = -1;
+	for (int idx = 0; idx < 4; idx++)
+	{
+		if (_poly[idx].x + _poly[idx].y < s)
+		{
+			s = _poly[idx].x + _poly[idx].y;
+			point[0] = _poly[idx];
+		}
+		else if (_poly[idx].x + _poly[idx].y > b)
+		{
+			b = _poly[idx].x + _poly[idx].y;
+			point[1] = _poly[idx];
+		}
+	}
+	return point;
+}
+
 // 5. 번호판의 조건 설정
 
 void BlackBox::processedVideo(int _mode)

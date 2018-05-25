@@ -14,7 +14,6 @@ class BlackBox
 {
 private:
 	Mat frame;
-	Mat proccessImg;
 	VideoCapture cap;
 	Size videoSize;
 
@@ -26,10 +25,11 @@ public:
 	void ROI2Threshold(Mat &_image, Point _xy, Size _size, int _mode);
 	void drawRect(Mat& _frame, Size _xy,Size _size);
 	void processedVideo(int _mode);
-	Mat& getMorphologyImage(Mat _image, Mat _kernel, int _mode);
+	Size* findRectPoint(vector<Point> _poly);
+
 	void processedImg()
 	{
-		/*---------- Image Processing -----------*/
+		/*---------- Image Procepoint[0]ing -----------*/
 		cvtColor(frame, frame, COLOR_BGR2GRAY);
 		Mat blurImg;
 		blur(frame, blurImg, Size(2, 2)); // 윤곽
@@ -38,14 +38,10 @@ public:
 		ROI2Threshold(blurImg, Point(0, 0), Size(videoSize.width, videoSize.height / 2.2), 0);  // 관심영역 설정 (하늘)
 		ROI2Threshold(blurImg, Point(0, videoSize.height / 1.3), Size(videoSize.width, videoSize.height - videoSize.height / 1.3), 0); // 관심영역 설정 (자동차)
 		
-		
-		Mat morphImg =  getMorphologyImage(blurImg, Mat(9, 9, CV_8U), MORPH_TOPHAT);
-		 // 커널값 클수록 흰 영역 많아짐.
-		//morphologyEx(blurImg, morphImg,MORPH_TOPHAT, kernel);
-
-		////Mat temp = morphImg.clone(); // 새로운 공간 생성
-		//imshow("morphImg", morphImg);
-		
+		// 커널값 클수록 흰 영역 많아짐.																															   // 커널값 클수록 흰 영역 많아짐.
+		Mat morphImg;
+		morphologyEx(blurImg, morphImg, MORPH_TOPHAT, Mat(9, 9, CV_8U));
+				
 		imshow("blurImg", blurImg);
 		imshow("morphImg", morphImg);
 
@@ -57,16 +53,9 @@ public:
 		findContours(morphImg, contours, hierarchy, \
 			CV_RETR_TREE, CV_CHAIN_APPROX_NONE);
 
-		//cout << contours.size() << endl;
 		cvtColor(frame, frame, COLOR_GRAY2BGR);
-		cvtColor(morphImg, morphImg, COLOR_GRAY2BGR);
+		//cvtColor(morphImg, morphImg, COLOR_GRAY2BGR);
 
-		//for (int i = 1; i < contours.size(); i++)
-		//{
-		//	if (contours[i].size() > 100 && contours[i].size()<200)
-		//		drawContours(frame, contours, i, Scalar(0, 0, 255), 1, 4, \
-				//			hierarchy);
-//}
 
 		vector<Point> poly;
 		for (int i = 0; i < contours.size(); i++)
@@ -80,30 +69,17 @@ public:
 				hierarchy);*/
 
 				// 원점이랑 제일 가까운애 찾기
-				int s = poly[0].x + poly[0].y;
-				int b = -1; Size bb;
-				Size ss = poly[0];
-				for (int idx = 1; idx < 4; idx++)
+				Size* point = new Size[2];
+				point = findRectPoint(poly);
+				
+				if ((point[1].height - point[0].height)* (point[1].width - point[0].width) > 1000) continue;
+				//if ((point[1].width - point[0].width) / (point[1].height - point[0].height) < 3)continue;
+				if ((point[1].height - point[0].height) == 0)continue;
+				if ((point[1].width - point[0].width) / (point[1].height - point[0].height) > 3 && \
+					(point[1].width - point[0].width) / (point[1].height - point[0].height)<8)
 				{
-					if (poly[idx].x + poly[idx].y < s)
-					{
-						s = poly[idx].x + poly[idx].y;
-						ss = poly[idx];
-					}
-					else if (poly[idx].x + poly[idx].y > b)
-					{
-						b = poly[idx].x + poly[idx].y;
-						bb = poly[idx];
-					}
-				}
-				if ((bb.height - ss.height)* (bb.width - ss.width) > 1000) continue;
-				//if ((bb.width - ss.width) / (bb.height - ss.height) < 3)continue;
-				if ((bb.height - ss.height) == 0)continue;
-				if ((bb.width - ss.width) / (bb.height - ss.height) > 3 && \
-					(bb.width - ss.width) / (bb.height - ss.height)<8)
-				{
-					drawRect(frame, ss, Size(bb.height - ss.height, bb.width - ss.width));
-					cout << "가로 세로 비율 " << (bb.width - ss.width) / (bb.height - ss.height) << endl;
+					drawRect(frame, point[0], Size(point[1].height - point[0].height, point[1].width - point[0].width));
+					cout << "가로 세로 비율 " << (point[1].width - point[0].width) / (point[1].height - point[0].height) << endl;
 				}
 
 				//cout << i << ": " << contourArea(contours[i]) << endl;
