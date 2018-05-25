@@ -6,10 +6,12 @@
 using namespace std;
 using namespace cv;
 
-#define COLOR 1
 #define GRAY 0
+#define COLOR 1
 #define VIDEO 2
 #define IMAGE 3
+
+
 class BlackBox
 {
 private:
@@ -25,8 +27,8 @@ public:
 	void ROI2Threshold(Mat &_image, Point _xy, Size _size, int _mode);
 	void drawRect(Mat& _frame, Size _xy,Size _size);
 	void processedVideo(int _mode);
+	bool numberDetect(Size* _point);
 	Size* findRectPoint(vector<Point> _poly);
-
 	void processedImg()
 	{
 		/*---------- Image Procepoint[0]ing -----------*/
@@ -65,48 +67,24 @@ public:
 			approxPolyDP(contours[i], poly, 7, true);
 			if (poly.size() == 4)
 			{
-				/*drawContours(frame, contours, i, Scalar(0, 0, 255), 2, 4, \
-				hierarchy);*/
-
 				// 원점이랑 제일 가까운애 찾기
 				Size* point = new Size[2];
 				point = findRectPoint(poly);
 				
-				if ((point[1].height - point[0].height)* (point[1].width - point[0].width) > 1000) continue;
-				//if ((point[1].width - point[0].width) / (point[1].height - point[0].height) < 3)continue;
-				if ((point[1].height - point[0].height) == 0)continue;
-				if ((point[1].width - point[0].width) / (point[1].height - point[0].height) > 3 && \
-					(point[1].width - point[0].width) / (point[1].height - point[0].height)<8)
+				if(numberDetect(point))
 				{
 					drawRect(frame, point[0], Size(point[1].height - point[0].height, point[1].width - point[0].width));
-					cout << "가로 세로 비율 " << (point[1].width - point[0].width) / (point[1].height - point[0].height) << endl;
+					//cout << "가로 세로 비율 " << (point[1].width - point[0].width) / (point[1].height - point[0].height) << endl;
 				}
 
-				//cout << i << ": " << contourArea(contours[i]) << endl;
 				imshow("Frame", frame);
-				waitKey(0);
-
+				//waitKey(0);
 
 			}
 		}
 
-
-
-
-		///*---------- Show Image ----------*/
-		//cvtColor(morphImg, morphImg, COLOR_GRAY2BGR);
-
-		//line(frame, Point(0, videoSize.height / 2.2), Point(videoSize.width, videoSize.height / 2.2), \
-			//	Scalar(0, 255, 0), 3);
-
-//line(frame, Point(0, videoSize.height / 1.3), Point(videoSize.width, videoSize.height / 1.3), \
-	//	Scalar(0, 255, 0), 3);
-
-
-
-//waitKey(0);
 	}
-	void bgr2Gray(Mat &_frame);
+	
 	
 };
 

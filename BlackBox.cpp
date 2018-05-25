@@ -3,8 +3,8 @@
 /* 구현 목록
  * 1. 파일 load
  * 2. 이미지 처리의 구간 나누기 (ROI(Region Of Interesting) 설정)
- * 3. contour 추출을 위해 이미지를 binary로 설정
- * 4. contour 추출
+ * 3. contour 추출
+ * 4. 번호판 좌표 추출
  * 5. 번호판의 조건 설정
 */
 BlackBox::BlackBox(string fname, int _format)
@@ -57,9 +57,15 @@ void BlackBox::ROI2Threshold(Mat &_image, Point _xy, Size _size, int _mode)
 }
 
 
-// 4. contour 추출
+// 3. contour 추출(사각형만)
+void findRectangle()
+{
+	vector<vector<Point>> contours; // 윤곽선 부분을 넣을 배열
+	vector<Vec4i> hierarchy; // 윤곽선 고유번호
+}
 
-// 백터의 0은 시작, 1은 끝
+// 4. 번호판 좌표 추출
+// 백터의 0은 시작점, 1은 끝점
 Size* BlackBox::findRectPoint(vector<Point> _poly)
 {
 	Size point[2];
@@ -82,6 +88,25 @@ Size* BlackBox::findRectPoint(vector<Point> _poly)
 }
 
 // 5. 번호판의 조건 설정
+/* 1) 사각형의 면적의 조건 설정
+ * 2) 차량번호판에 맞는 비율 설정
+ * 3) 번호판의 높이는 0이 될 수 없음 */
+bool BlackBox::numberDetect(Size* _point)
+{
+	int height = _point[1].height - _point[0].height;
+	int width = _point[1].width - _point[0].width;
+	//bool flag = true;
+
+	if (height * width > 1000) // 1번 조건
+		return false;
+	if (height == 0) // 3번 조건
+		return false;
+	if ((width / height < 3) || (width / height >6)) // 2번 조건
+		return false;
+
+	return true;
+}
+
 
 void BlackBox::processedVideo(int _mode)
 {
@@ -95,7 +120,7 @@ void BlackBox::processedVideo(int _mode)
 		//if (!_mode) // gray 일때만
 		//bgr2Gray(frame);
 		processedImg();
-	
+
 
 		char c = (char)waitKey(1);
 		if (c == 27) break;
@@ -104,15 +129,3 @@ void BlackBox::processedVideo(int _mode)
 	destroyAllWindows();
 }
 
-
-
-
-void BlackBox::bgr2Gray(Mat &_frame)
-{
-	cvtColor(_frame, _frame, COLOR_BGR2GRAY);
-	//Canny(_frame, _frame,300,200);
-	adaptiveThreshold(_frame, _frame, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 5, 11.0);
-	//Canny(_frame, _frame, 100, 200);
-	cvtColor(_frame, _frame, COLOR_GRAY2BGR);
-
-}
