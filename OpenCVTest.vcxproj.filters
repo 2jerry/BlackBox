@@ -30,9 +30,15 @@
     <ClCompile Include="main2.cpp">
       <Filter>소스 파일\과제</Filter>
     </ClCompile>
+    <ClCompile Include="ImageProcess.cpp">
+      <Filter>소스 파일\과제</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlackBox.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageProcess.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
