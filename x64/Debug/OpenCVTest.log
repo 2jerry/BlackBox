@@ -1,10 +1,2 @@
-﻿  BlackBox.cpp
-  ImageProcess.cpp
-e:\opencvtest\blackbox\imageprocess.cpp(24): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-e:\opencvtest\blackbox\imageprocess.cpp(25): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-e:\opencvtest\blackbox\imageprocess.cpp(26): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-e:\opencvtest\blackbox\imageprocess.cpp(27): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  코드를 생성하고 있습니다...
-e:\opencvtest\blackbox\blackbox.cpp(91): warning C4172: 지역 변수 또는 임시: point의 주소를 반환하고 있습니다.
-  main2.cpp
+﻿  6-2.cpp
   OpenCVTest.vcxproj -> E:\OpenCVTest\BlackBox\x64\Debug\OpenCVTest.exe
